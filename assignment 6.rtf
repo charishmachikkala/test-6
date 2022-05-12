@@ -1,0 +1,319 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang16393{\fonttbl{\f0\fnil\fcharset0 Cambria;}{\f1\fnil Cambria;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.10240}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\b\f0\fs36\lang9 1. Explain why selenium is important in web scraping.\par
+\b0 Selenium is a Python library and tool used for automating web browsers to do a number of tasks. One of such is web-scraping to extract useful data and information that may be otherwise unavailable. Here\rquote s a step-by-step guide on how to use Selenium with the example being extracting NBA player salary data from the website {{\field{\*\fldinst{HYPERLINK https://hoopshype.com/salaries/players/ }}{\fldrslt{https://hoopshype.com/salaries/players/\ul0\cf0}}}}\f0\fs36 .\par
+Step 1 \f1\emdash\f0  Install and Imports\par
+pip install selenium\par
+Once installed, you\f1\rquote\f0 re ready for the imports.\par
+from selenium import webdriver\par
+from selenium.webdriver.common.keys import Keys\par
+import pandas as pd\par
+Step 2 \f1\emdash\f0  Install and Access WebDriver\par
+A webdriver is a vital ingredient to this process. It is what will actually be automatically opening up your browser to access your website of choice. This step is different based on which browser you use to explore the internet. I happen to use Google Chrome. Some say Chrome works best with Selenium, although it does also support Internet Explorer, Firefox, Safari, and Opera. For chrome you first need to download the webdriver at {{\field{\*\fldinst{HYPERLINK https://chromedriver.chromium.org/downloads }}{\fldrslt{https://chromedriver.chromium.org/downloads\ul0\cf0}}}}\f0\fs36 . There are several different download options based on your version of Chrome. To locate what version of Chrome you have, click on the 3 vertical dots at the top right corner of your browser window, scroll down to help, and select \f1\ldblquote\f0 About Google Chrome\f1\rdblquote\f0 . There you will see your version. I have version 80.0.3987.149, shown in the screenshots below.\par
+Now you need to know where you saved your webdriver download on your local computer. Mine is just saved in my default downloads folder. You now can create a driver variable using the direct path of the location of your downloaded webdriver.\par
+driver = webdriver.Chrome('/Users/MyUsername/Downloads/chromedriver')\par
+Step 3 \f1\emdash\f0  Access Website Via Python\par
+Very simple yet very important step. You need your code to actually open the website you\f1\rquote\f0 re attempting to scrape.\par
+driver.get('https://hoopshype.com/salaries/players/')\par
+When run, this code snippet will open the browser to your desired website.\par
+Step 4\f1\emdash\f0  Locate Specific Information You\f1\rquote\f0 re Scraping\par
+In order to extract the information that you\f1\rquote\f0 re looking to scrape, you need to locate the element\f1\rquote\f0 s XPath. An XPath is a syntax used for finding any element on a webpage. To locate the element\f1\rquote\f0 s XPath, highlight the first in the list of what you\f1\rquote\f0 re looking for, right click, and select inspect; this opens up the developer tools. For my example, I first want to locate the NBA player names, so I first select Stephen Curry.\par
+In the developer tools, we now see the element \f1\ldblquote\f0 Stephen Curry\f1\rdblquote\f0  appears as such.\par
+<td class=\f1\rdblquote\f0 name\f1\rdblquote\f0 >\par
+<a href=\f1\rdblquote\f0 https://hoopshype.com/player/stephen-curry/salary/">\par
+Stephen Curry </a>\par
+</td>\par
+This element can easily be translated to its XPath, but first, we need to remember that we aren\f1\rquote\f0 t just trying to locate this element, but all player names. Using the same process, I located the next element in the list, Russell Westbrook.\par
+<td class=\f1\rdblquote\f0 name\f1\rdblquote\f0 >\par
+<a href=\f1\rdblquote\f0 https://hoopshype.com/player/russell-westbrook/salary/">\par
+Russell Westbrook </a>\par
+</td>\par
+The commonality between these two (and all other player names) is <td class=\f1\rdblquote\f0 name\f1\rdblquote\f0 >, so that is what we will be using to create a list of all player names. That translated into an XPath looks like //td[@class=\f1\rdblquote\f0 name\f1\rdblquote\f0 ]. Breaking that down, all XPaths are preceded by the double slash, which we want in a td tag, with each class in that td tag needing to correspond to \f1\ldblquote\f0 name\f1\rdblquote\f0 . We now can create the list of player names with this Selenium function.\par
+players = driver.find_elements_by_xpath('//td[@class="name"]')\par
+And now to get the text of each player name into a list, we write this function.\par
+players_list = []\par
+for p in range(len(players)):\par
+    players_list.append(players[p].text)\par
+Following this same process to acquire the player salaries\f1\'85\f0\par
+\b 2. What's the difference between scraping images and scraping websites?\par
+\b0 Image scraping is a subset of the web scraping technology. While web scraping deals with all forms of web data extraction, image scraping only focuses on the media side \f1\endash  images, videos, audio, and so on.\par
+While there are several tools and techniques available to extract images from websites, we\rquote ll take a look at two solutions provided by Grepsr \emdash  Grepsr Concierge and Grepsr Browser Extensions \emdash  in this article.\par
+Via Grepsr Concierge\par
+Grepsr\rquote s Concierge service is the perfect solution for bulk image extraction requirements \emdash  such as multiple image URLs for an item, or extracting images as JPG or PNG files, compressing them into zip files, applying a certain file naming format and so on.\par
+Once we receive your project details, our team of expert engineers get to work setting up the project tailored specifically to your requirements.\par
+Data to make or break your business\par
+Get high-priority web data for your business, when you want it.\par
+Get Started\par
+Via the Grepsr Browser Extensions\par
+The Grepsr Browser Extensions is a simple-yet-powerful DIY tool built for simple data extraction projects. Its point-and-click interface allows users to visit any well-structured website and collect data points with ease.\par
+Before we get into the step-by-step procedure, make sure you have the browser extension installed. It is currently available for Google Chrome and Microsoft Edge.\par
+Phase 1 \emdash  Mark & tag data points\par
+1. Visit the website you want to collect your data from, and click the Grepsr icon \emdash  the blue \lquote g\rquote  icon next to the browser\rquote s address bar.\par
+Grepsr browser extensions load\par
+Click to activate the Grepsr scraping tool.\par
+2. When the plugin is activated, click on one of the images. This will select and highlight the current image, as well as the display image of the other items on the page.\par
+If not, click on any other display image and then the rest should also be automatically highlighted.\par
+Sometimes, other items might also be selected, which might give you an error saying \ldblquote The data is unstructured.\rdblquote  In such cases, you need to clear the unwanted selections before proceeding to the next step.\par
+Tag items\par
+3. Once you\rquote re happy with the selections, click Save Selection.\par
+4. Since we only want the image URLs, or the source URLs, select the \lquote src\lquote  option on the Extract column dropdown.\par
+5. Give the field a title (say, \ldblquote Image URL\rdblquote ) and click Save Fields or press Enter.\par
+Save field\par
+6. For the sake of this tutorial, let\rquote s assume we only want the image URL. Click Next to proceed.\par
+7. Next, the extension will ask you if the page has pagination. Click No if it doesn\rquote t have any. The three pagination types supported are:\par
+\ldblquote Next\rdblquote  link or button \endash  where the subsequent items are listed in new pages\par
+Infinite scroll \endash  where new items continue to load as you scroll down a page\par
+\ldblquote Load more\rdblquote  link or button \endash  where you click a button at the bottom to load new items in the same page\par
+Pagination type\par
+If the current page has any of the above pagination styles, select the option, then navigate to the button on the page and click it to continue. Then click Done.\par
+Pagination Next\par
+8. If you want to go into the details page for the item, then select the option and click Next. this will take you to the product details page where you can mark and tag other data fields.\par
+For this tutorial, we\rquote ll proceed with No.\par
+Click Continue.\par
+Go to details page\par
+9. Next, if the website requires you to log in before any data is accessible, then you will need to enter your login credentials in this step.\par
+To get to the login page, simply click the icon marked with the red arrow below. This will open the website in an incognito or private browsing mode. Go to the login page, and copy the page URL, navigate back to the extension interface and paste it.\par
+Rest assured that your username and password are encoded in our database, i.e. converted into humanly unreadable formats.\par
+Login credentials\par
+For this example, we don\rquote t need to be logged in to the website. So we\rquote ll select No and Continue.\par
+10. Preview your data and click Continue.\par
+Phase 2 \emdash  Project setup\par
+11. In case this is your first use of the browser extension, fill the form to sign up to Grepsr. In case you already have an account, simply log in.\par
+12. Then either create a new project or select one that already exists. Do the same for the report. You can have multiple reports within a project.\par
+13. Start crawling!\par
+Start data extraction\par
+14. You\rquote ll then be redirected to the Grepsr app platform, where you can see your extracted image URLs start to populate the data table.\par
+Depending on the complexity of the website, the full data extraction may take a few minutes to complete.\par
+Grepsr app platform\par
+For a niche data extraction requirement like image scraping, you need a specialized solution that capable of delivering the best results at scale. At Grepsr, we have more than ten years of experience behind us in providing our clients with any complex data.\f0\par
+\b 3. Explain how MongoDB indexes data.\par
+\b0 MongoDB uses multikey indexes to index the content stored in arrays. If you index a field that holds an array value, MongoDB creates separate index entries for every element of the array. These multikey indexes allow queries to select documents that contain arrays by matching on element or elements of the arrays. MongoDB automatically determines whether to create a multikey index if the indexed field contains an array value; you do not need to explicitly specify the multikey type.\par
+Diagram of a multikey index on the ``addr.zip`` field. The ``addr`` field contains an array of address documents. The address documents contain the ``zip`` field.\par
+See Multikey Indexes and Multikey Index Bounds for more information on multikey indexes.\par
+Geospatial Index\par
+To support efficient queries of geospatial coordinate data, MongoDB provides two special indexes: 2d indexes that uses planar geometry when returning results and 2dsphere indexes that use spherical geometry to return results.\par
+See 2d Index Internals for a high level introduction to geospatial indexes.\par
+Text Indexes\par
+MongoDB provides a text index type that supports searching for string content in a collection. These text indexes do not store language-specific stop words (e.g. "the", "a", "or") and stem the words in a collection to only store root words.\par
+See Text Indexes for more information on text indexes and search.\par
+Hashed Indexes\par
+To support hash based sharding, MongoDB provides a hashed index type, which indexes the hash of the value of a field. These indexes have a more random distribution of values along their range, but only support equality matches and cannot support range-based queries.\par
+Index Properties\par
+Unique Indexes\par
+The unique property for an index causes MongoDB to reject duplicate values for the indexed field. Other than the unique constraint, unique indexes are functionally interchangeable with other MongoDB indexes.\par
+Partial Indexes\par
+New in version 3.2.\par
+Partial indexes only index the documents in a collection that meet a specified filter expression. By indexing a subset of the documents in a collection, partial indexes have lower storage requirements and reduced performance costs for index creation and maintenance.\par
+Partial indexes offer a superset of the functionality of sparse indexes and should be preferred over sparse indexes.\par
+Sparse Indexes\par
+The sparse property of an index ensures that the index only contain entries for documents that have the indexed field. The index skips documents that do not have the indexed field.\par
+You can combine the sparse index option with the unique index option to prevent inserting documents that have duplicate values for the indexed field(s) and skip indexing documents that lack the indexed field(s).\par
+TTL Indexes\par
+TTL indexes are special indexes that MongoDB can use to automatically remove documents from a collection after a certain amount of time. This is ideal for certain types of information like machine generated event data, logs, and session information that only need to persist in a database for a finite amount of time.\par
+See: Expire Data from Collections by Setting TTL for implementation instructions.\par
+Hidden Indexes\par
+New in version 4.4.\par
+Hidden indexes are not visible to the query planner and cannot be used to support a query.\par
+By hiding an index from the planner, users can evaluate the potential impact of dropping an index without actually dropping the index. If the impact is negative, the user can unhide the index instead of having to recreate a dropped index. And because indexes are fully maintained while hidden, the indexes are immediately available for use once unhidden.\par
+Except for the _id index, you can hide any indexes.\par
+Index Use\par
+Indexes can improve the efficiency of read operations. The Analyze Query Performance tutorial provides an example of the execution statistics of a query with and without an index.\par
+For information on how MongoDB chooses an index to use, see query optimizer.\par
+Indexes and Collation\par
+New in version 3.4.\par
+Collation allows users to specify language-specific rules for string comparison, such as rules for lettercase and accent marks.\par
+To use an index for string comparisons, an operation must also specify the same collation. That is, an index with a collation cannot support an operation that performs string comparisons on the indexed fields if the operation specifies a different collation.\par
+For example, the collection myColl has an index on a string field category with the collation locale "fr".\par
+db.myColl.createIndex( \{ category: 1 \}, \{ collation: \{ locale: "fr" \} \} )\par
+The following query operation, which specifies the same collation as the index, can use the index:\par
+db.myColl.find( \{ category: "cafe" \} ).collation( \{ locale: "fr" \} )\par
+However, the following query operation, which by default uses the "simple" binary collator, cannot use the index:\par
+db.myColl.find( \{ category: "cafe" \} )\par
+For a compound index where the index prefix keys are not strings, arrays, and embedded documents, an operation that specifies a different collation can still use the index to support comparisons on the index prefix keys.\par
+For example, the collection myColl has a compound index on the numeric fields score and price and the string field category; the index is created with the collation locale "fr" for string comparisons:\par
+db.myColl.createIndex(\par
+   \{ score: 1, price: 1, category: 1 \},\par
+   \{ collation: \{ locale: "fr" \} \} )\par
+The following operations, which use "simple" binary collation for string comparisons, can use the index:\par
+db.myColl.find( \{ score: 5 \} ).sort( \{ price: 1 \} )\par
+db.myColl.find( \{ score: 5, price: \{ $gt: NumberDecimal( "10" ) \} \} ).sort( \{ price: 1 \} )\par
+The following operation, which uses "simple" binary collation for string comparisons on the indexed category field, can use the index to fulfill only the score: 5 portion of the query:\par
+db.myColl.find( \{ score: 5, category: "cafe" \} )\par
+For more information on collation, see the collation reference page.\par
+The following indexes only support simple binary comparison and do not support collation:\par
+text indexes,\par
+2d indexes, and\par
+geoHaystack indexes.\par
+Covered Queries\par
+When the query criteria and the projection of a query include only the indexed fields, MongoDB returns results directly from the index without scanning any documents or bringing documents into memory. These covered queries can be very efficient.\par
+Diagram of a query that uses only the index to match the query criteria and return the results. MongoDB does not need to inspect data outside of the index to fulfill the query.\par
+click to enlarge\par
+For more information on covered queries, see Covered Query.\par
+Index Intersection\par
+MongoDB can use the intersection of indexes to fulfill queries. For queries that specify compound query conditions, if one index can fulfill a part of a query condition, and another index can fulfill another part of the query condition, then MongoDB can use the intersection of the two indexes to fulfill the query. Whether the use of a compound index or the use of an index intersection is more efficient depends on the particular query and the system.\par
+For details on index intersection, see Index Intersection.\par
+Restrictions\par
+Certain restrictions apply to indexes, such as the length of the index keys or the number of indexes per collection. See Index Limitations for details.\par
+\b 4. What is the significance of the SET modifier?\par
+\b0 Set expressions are used to define the scope of a calculation. The central part of the set expression is the set modifier that specifies a selection. This is used to modify the user selection, or the selection in the set identifier, and the result defines a new scope for the calculation.\par
+The set modifier consists of one or more field names, each followed by a selection that should be made on the field. The modifier is enclosed by angled brackets: < >\par
+For example:\par
+Sum ( \{$<Year = \{2015\}>\} Sales )\par
+Count ( \{1<Country = \{Germany\}>\} distinct OrderID )\par
+Sum ( \{$<Year = \{2015\}, Country = \{Germany\}>\} Sales )\par
+Element sets\par
+An element set can be defined using the following:\par
+A list of values\par
+A search\par
+A reference to another field\par
+A set function\par
+If the element set definition is omitted, the set modifier will clear any selection in this field. For example:\par
+Sum( \{$<Year = >\} Sales )\par
+Examples: Chart expressions for set modifiers based on element sets\par
+Examples - chart expressions\par
+Listed values\par
+The most common example of an element set is one that is based on a list of field values enclosed in curly brackets. For example:\par
+\{$<Country = \{Canada, Germany, Singapore\}>\}\par
+\{$<Year = \{2015, 2016\}>\}\par
+The inner curly brackets define the element set. The individual values are separated by commas.\par
+Quotes and case sensitivity\par
+If the values contain blanks or special characters, the values need to be quoted. Single quotes will be a literal, case-sensitive match with a single field value. Double quotes imply a case-insensitive match with one or several field values. For example:\par
+<Country = \{'New Zealand'\}>\par
+Matches New Zealand only\par
+<Country = \{"New Zealand"\}>\par
+Matches New Zealand, NEW ZEALAND, and new zealand.\par
+Dates must be enclosed in quotes and use the date format of the field in question. For example:\par
+<ISO_Date = \{'2021-12-31'\}>\par
+<US_Date = \{'12/31/2021'\}>\par
+<UK_Date = \{'31/12/2021'\}>\par
+Double quotes can be substituted by square brackets or by grave accents.\par
+Searches\par
+Element sets can also be created through searches. For example:\par
+<Country = \{"C*"\}>\par
+<Ingredient = \{"*garlic*"\}>\par
+<Year = \{">2015"\}>\par
+<Date = \{">12/31/2015"\}>\par
+Wildcards can be used in a text searches: An asterisk (*) represents any number of characters, and a question mark (?) represents a single character. Relational operators can be used to define numeric searches.\par
+You should always use double quotes for searches. Searches are case-insensitive.\par
+For more information, see Set modifiers with searches.\par
+Dollar expansions\par
+Dollar expansions are needed if you want to use a calculation inside your element set. For example, if you want to look at the last possible year only, you can use:\par
+<Year = \{$(=Max(Year))\}>\par
+For more information, see Set modifiers with dollar-sign expansions.\par
+Selected values in other fields\par
+Modifiers can be based on the selected values of another field. For example:\par
+<OrderDate = DeliveryDate>\par
+This modifier will take the selected values from DeliveryDate and apply those as a selection on OrderDate. If there are many distinct values \f1\endash  more than a couple of hundred \endash  then this operation is CPU intensive and should be avoided.\par
+Element set functions\par
+The element set can also be based on the set functions P() (possible values) and E() (excluded values).\par
+For example, if you want to select countries where the product Cap has been sold, you can use:\par
+<Country = P(\{1<Product=\{Cap\}>\} Country)>\par
+Similarly, if you want to pick out the countries where the product Cap has not been sold, you can use:\par
+<Country = E(\{1<Product=\{Cap\}>\} Country)>\par
+\b\f0\lang16393 5. Explain the MongoDB aggregation framework.\par
+\b0 A frequently asked question is why do aggregation inside MongoDB at all? From the MongoDB documentation:\par
+Aggregation operations process data records and return computed results. Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result.\par
+By using the built-in aggregation operators available in MongoDB, we are able to do analytics on a cluster of servers we're already using without having to move the data to another platform, like Apache Spark or Hadoop. While those, and similar, platforms are fast, the data transfer from MongoDB to them can be slow and potentially expensive. By using the aggregation framework the work is done inside MongoDB and then the final results can be sent to the application typically resulting in a smaller amount of data being moved around. It also allows for the querying of the LIVE version of the data and not an older copy of data from a batch.\par
+An the aggregation framework, we think of stages instead of commands. And the stage "output" is documents. Documents go into a stage, some work is done, and documents come out. From there they can move onto another stage or provide output.\par
+Aggregation Stages\par
+At the time of this writing, there are twenty-eight different aggregation stages available. These different stages provide the ability to do a wide variety of tasks. For example, we can build an aggregation pipeline that matches a set of documents based on a set of criteria, groups those documents together, sorts them, then returns that result set to us.ggregation in MongoDB allows for the transforming of data and results in a more powerful fashion than from using the find() command. Through the use of multiple stages and expressions, you are able to build a "pipeline" of operations on your data to perform analytic operations. What do I mean by a "pipeline"? The aggregation framework is conceptually similar to the *nix command line pipe, |. In the *nix command line pipeline, a pipe transfers the standard output to some other destination. The output of one command is sent to another command for further processing.\par
+\lang9 This can be confusing and some of these concepts are worth repeating. Therefore, let's break this down a bit further:\par
+\par
+A pipeline starts with documents\par
+These documents come from a collection, a view, or a specially designed stage\par
+In each stage, documents enter, work is done, and documents exit\par
+The stages themselves are defined using the document syntax\par
+Let's take a look at an example pipeline. Our documents are from the Sample Data that's available in MongoDB Atlas and the routes collection in the sample_training database. Here's a sample document:\par
+\par
+\{\par
+"_id":\{\par
+    "$oid":"56e9b39b732b6122f877fa31"\par
+\},\par
+"airline":\{\par
+   "id":\{\par
+       "$numberInt":"410"\par
+   \},\par
+   "name":"Aerocondor"\par
+   ,"alias":"2B"\par
+   ,"iata":"ARD"\par
+\},\par
+"src_airport":"CEK",\par
+"dst_airport":"KZN",\par
+"Codeshare":"",\par
+"stops":\{\par
+    "$numberInt":"0"\par
+\},\par
+"airplane":"CR2"\par
+\}\par
+\par
+copy code\par
+If you haven't yet set up your free cluster on MongoDB Atlas, now is a great time to do so. You have all the instructions in this blog post.\par
+For this example query, let's find the top three airlines that offer the most direct flights out of the airport in Portland, Oregon, USA (PDX). To start with, we'll do a $match stage so that we can concentrate on doing work only on those documents that meet a base of conditions. In this case, we'll look for documents with a src_airport, or source airport, of PDX and that are direct flights, i.e. that have zero stops.\par
+\{\par
+  $match: \{\par
+    "src_airport": "PDX",\par
+    "stops": 0\par
+  \}\par
+\}\par
+copy code\par
+That reduces the number of documents in our pipeline down from 66,985 to 113. Next, we'll group by the airline name and count the number of flights:\par
+\{\par
+    $group: \{\par
+        _id: \{\par
+            "airline name": "$airline.name"\par
+        \},\par
+        count: \{\par
+            $sum: 1\par
+        \}\par
+    \}\par
+\}\par
+copy code\par
+With the addition of the $group stage, we're down to 16 documents. Let's sort those with a $sort stage and sort in descending order:\par
+\{\par
+    $sort: \{\par
+        count: -1\par
+\}\par
+copy code\par
+Then we can add a $limit stage to just have the top three airlines that are servicing Portland, Oregon:\par
+\{\par
+   $limit: 3\par
+\}\par
+copy code\par
+After putting the documents in the sample_training.routes collection through this aggregation pipeline, our results show us that the top three airlines offering non-stop flights departing from PDX are Alaska, American, and United Airlines with 39, 17, and 13 flights, respectively.\par
+For example, in Python you would do something like:\par
+from pymongo import MongoClient\par
+# Requires the PyMongo package.\par
+# The dnspython package is also required to use a mongodb+src URI string\par
+# {{\field{\*\fldinst{HYPERLINK https://api.mongodb.com/python/current }}{\fldrslt{https://api.mongodb.com/python/current\ul0\cf0}}}}\f0\fs36\par
+client = MongoClient('YOUR-ATLAS-CONNECTION-STRING')\par
+result = client['sample_training']['routes'].aggregate([\par
+    \{\par
+        '$match': \{\par
+            'src_airport': 'PDX',\par
+            'stops': 0\par
+        \}\par
+    \}, \{\par
+        '$group': \{\par
+            '_id': \{\par
+                'airline name': '$airline.name'\par
+            \},\par
+            'count': \{\par
+                '$sum': 1\par
+            \}\par
+        \}\par
+    \}, \{\par
+        '$sort': \{\par
+            'count': -1\par
+        \}\par
+    \}, \{\par
+        '$limit': 3\par
+    \}\par
+])\par
+copy code\par
+The aggregation code is pretty similar in other languages as well.\par
+Wrap Up\par
+The MongoDB aggregation framework is an extremely powerful set of tools. The processing is done on the server itself which results in less data being sent over the network. In the example used here, instead of pulling all of the documents into an application and processing them in the application, the aggregation framework allows for only the three documents we wanted from our query to be sent back to the application.\par
+This was just a brief introduction to some of the operators available. Over the course of this series, I'll take a closer look at some of the most popular aggregation framework operators as well as some interesting, but less used ones. I'll also take a look at performance considerations of using the aggregation framework.\par
+}
+ 
